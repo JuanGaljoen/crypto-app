@@ -69,10 +69,10 @@ PORT=3001
 
 ```bash
 # Start the backend server
-npm run dev:server
+npm run dev
 
 # In a separate terminal, start the frontend
-npm run dev:client
+npm run dev
 ```
 
 The application will be available at `http://localhost:3000`
