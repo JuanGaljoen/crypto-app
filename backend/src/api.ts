@@ -6,10 +6,36 @@ import { saveTokenData } from "./db";
 const COINGECKO_API_URL = "https://api.coingecko.com/api/v3";
 const API_KEY = process.env.COINGECKO_API_KEY || "CG-32JARN2FnAhPKaq9X68XARkg";
 
+// Enhanced axios request with retry logic for rate limiting
+async function makeRateLimitedRequest(url: string, params: any, headers: any, maxRetries = 3): Promise<any> {
+    let retries = 0;
+
+    while (retries < maxRetries) {
+        try {
+            return await axios.get(url, { params, headers });
+        } catch (error: any) {
+            if (error.response && error.response.status === 429) {
+                // Get retry time from header or default to 6 seconds
+                const retryAfter = parseInt(error.response.headers['retry-after']) || 6;
+                console.log(`Rate limited by CoinGecko API. Waiting ${retryAfter} seconds...`);
+
+                // Wait for the specified time
+                await new Promise(resolve => setTimeout(resolve, retryAfter * 1000));
+                retries++;
+            } else {
+                // If it's not a rate limit error, throw it immediately
+                throw error;
+            }
+        }
+    }
+
+    throw new Error(`Failed after ${maxRetries} retries due to rate limiting`);
+}
+
 // Function to fetch token details (price, changes, volume, market cap)
 export async function getTokenDetails(req: Request, res: Response): Promise<void> {
     try {
-        const tokens = ['ethereum', 'cardano']; // Default tokens
+        const tokens = ['ethereum', 'aver-ai']; // Default tokens
         const requestedToken = req.query.token as string;
 
         if (requestedToken && !tokens.includes(requestedToken)) {
@@ -28,17 +54,18 @@ export async function getTokenDetails(req: Request, res: Response): Promise<void
                 continue;
             }
 
-            // Fetch from CoinGecko if not in cache
-            const response = await axios.get(`${COINGECKO_API_URL}/coins/${token}`, {
-                headers: { 'x-cg-api-key': API_KEY },
-                params: {
+            // Fetch from CoinGecko if not in cache with rate limiting
+            const response = await makeRateLimitedRequest(
+                `${COINGECKO_API_URL}/coins/${token}`,
+                {
                     localization: false,
                     tickers: false,
                     market_data: true,
                     community_data: false,
                     developer_data: false
-                }
-            });
+                },
+                { 'x-cg-api-key': API_KEY }
+            );
 
             // Extract relevant data
             const tokenData = {
@@ -85,14 +112,12 @@ export async function getOHLCData(req: Request, res: Response): Promise<void> {
             return;
         }
 
-        // Fetch data from CoinGecko
-        const response = await axios.get(`${COINGECKO_API_URL}/coins/${token}/ohlc`, {
-            headers: { 'x-cg-api-key': API_KEY },
-            params: {
-                vs_currency: "usd",
-                days: days
-            },
-        });
+        // Fetch data from CoinGecko with rate limiting
+        const response = await makeRateLimitedRequest(
+            `${COINGECKO_API_URL}/coins/${token}/ohlc`,
+            { vs_currency: "usd", days: days },
+            { 'x-cg-api-key': API_KEY }
+        );
 
         const data = response.data;
 
