@@ -1,4 +1,4 @@
-import { MongoClient, Collection } from "mongodb";
+import { MongoClient, Collection, Db } from "mongodb";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -6,7 +6,7 @@ dotenv.config();
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb+srv://juangaljoen:admin@cryptocluster.u2lgt.mongodb.net/?retryWrites=true&w=majority&appName=CryptoCluster";
 const DB_NAME = process.env.DB_NAME || "token_data";
 
-let tokenCollection: Collection;
+export let tokenCollection: Collection;
 let client: MongoClient;
 
 // Track last update time for each token to enforce 1-minute updates
@@ -27,6 +27,10 @@ export async function connectToDatabase(): Promise<void> {
         console.error("Error connecting to database:", error);
         process.exit(1);
     }
+}
+
+export function setTokenCollection(db: Db) {
+    tokenCollection = db.collection("tokens");
 }
 
 export async function saveTokenData(data: any): Promise<void> {
@@ -63,3 +67,5 @@ export async function getTokenHistoricalData(tokenId: string, limit: number = 10
         return [];
     }
 }
+
+export { client }; 

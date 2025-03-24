@@ -6,7 +6,6 @@ import { saveTokenData } from "./db";
 const COINGECKO_API_URL = "https://api.coingecko.com/api/v3";
 const API_KEY = process.env.COINGECKO_API_KEY || "CG-32JARN2FnAhPKaq9X68XARkg";
 
-// Enhanced axios request with retry logic for rate limiting
 async function makeRateLimitedRequest(url: string, params: any, headers: any, maxRetries = 3): Promise<any> {
     let retries = 0;
 
@@ -35,7 +34,7 @@ async function makeRateLimitedRequest(url: string, params: any, headers: any, ma
 // Function to fetch token details (price, changes, volume, market cap)
 export async function getTokenDetails(req: Request, res: Response): Promise<void> {
     try {
-        const tokens = ['ethereum', 'aver-ai']; // Default tokens
+        const tokens = ['ethereum', 'aver-ai'];
         const requestedToken = req.query.token as string;
 
         if (requestedToken && !tokens.includes(requestedToken)) {
