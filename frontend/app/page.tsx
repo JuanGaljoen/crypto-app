@@ -15,7 +15,6 @@ export default function Home() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch token details
   const fetchTokensData = async () => {
     try {
       const response = await axios.get(`${API_URL}/tokens`);
@@ -27,7 +26,6 @@ export default function Home() {
     }
   };
 
-  // Fetch OHLC data for selected token
   const fetchOHLCData = async (token: string) => {
     try {
       setLoading(true);
@@ -44,21 +42,18 @@ export default function Home() {
     }
   };
 
-  // Initial data fetch
   useEffect(() => {
     fetchTokensData();
     fetchOHLCData(selectedToken);
 
-    // Set up refresh interval
     const interval = setInterval(() => {
       fetchTokensData();
       fetchOHLCData(selectedToken);
-    }, 30000); // Refresh every 30 seconds
+    }, 30000);
 
     return () => clearInterval(interval);
   }, [selectedToken]);
 
-  // Handle token selection for chart
   const handleTokenSelect = (token: string) => {
     setSelectedToken(token);
   };
