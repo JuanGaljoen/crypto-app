@@ -62,7 +62,7 @@ MONGODB_URI=your_mongodb_atlas_connection_string
 REDIS_URL=redis://localhost:6379
 
 # Server
-PORT=3001
+PORT=5001
 ```
 
 ### 4. Running the Application
