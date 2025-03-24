@@ -10,7 +10,6 @@ interface TokenTableProps {
 }
 
 const TokenTable: FC<TokenTableProps> = ({ tokens, onSelectToken, selectedToken }) => {
-    // Format numbers for display
     const formatCurrency = (value: number): string => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
