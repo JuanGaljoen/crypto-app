@@ -41,8 +41,8 @@ redis-cli ping
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/token-data-api.git
-cd token-data-api
+git clone https://github.com/JuanGaljoen/crypto-app.git
+cd crypto-app
 
 # Install dependencies
 npm install
