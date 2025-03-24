@@ -110,3 +110,12 @@ npm run test:security
 - Redis caching reduces load on the CoinGecko API and improves response times
 - Efficient data formatting and transfer between layers
 
+## TODO: Potential Future Features
+
+- User authentication system with personalized watchlists
+- Price alerts and notifications via email or push notifications
+- Additional token support with customizable dashboard
+- Historical data analysis with advanced chart visualization options
+- Portfolio tracking with performance metrics
+- Dark/light theme toggle
+- Export functionality for data in CSV/JSON formats
