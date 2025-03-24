@@ -3,8 +3,8 @@ import { Request, Response } from "express";
 import { redisClient } from "./cache";
 import { saveTokenData } from "./db";
 
-const COINGECKO_API_URL = "https://api.coingecko.com/api/v3";
-const API_KEY = process.env.COINGECKO_API_KEY || "CG-32JARN2FnAhPKaq9X68XARkg";
+const COINGECKO_API_URL = process.env.COINGECKO_API_URL;
+const API_KEY = process.env.COINGECKO_API_KEY;
 
 async function makeRateLimitedRequest(url: string, params: any, headers: any, maxRetries = 3): Promise<any> {
     let retries = 0;

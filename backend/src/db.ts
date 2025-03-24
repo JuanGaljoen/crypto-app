@@ -3,8 +3,8 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb+srv://juangaljoen:admin@cryptocluster.u2lgt.mongodb.net/?retryWrites=true&w=majority&appName=CryptoCluster";
-const DB_NAME = process.env.DB_NAME || "token_data";
+const MONGO_URI = process.env.MONGO_URI || "";
+const DB_NAME = process.env.DB_NAME;
 
 export let tokenCollection: Collection;
 let client: MongoClient;
@@ -14,7 +14,7 @@ const lastUpdateTimes: Record<string, number> = {};
 
 export async function connectToDatabase(): Promise<void> {
     try {
-        client = new MongoClient(MONGODB_URI);
+        client = new MongoClient(MONGO_URI);
         await client.connect();
         console.log("Connected to MongoDB Atlas");
 
