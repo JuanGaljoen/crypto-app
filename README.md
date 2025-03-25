@@ -32,6 +32,9 @@ brew install redis
 # Start Redis server
 redis-server
 
+# Start Redis server (macOS with Homebrew)
+brew services start redis
+
 # Verify Redis is running
 redis-cli ping
 # Should return "PONG"
