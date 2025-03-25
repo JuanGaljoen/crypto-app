@@ -109,7 +109,7 @@ npm run test:security
 ```
 
 ## Performance Considerations
-- The system is designed to handle 10K+ concurrent users
+- The free CoinGecko API has a rate limit, so it might timeout for 60 seconds if limit is reached.
 - Redis caching reduces load on the CoinGecko API and improves response times
 - Efficient data formatting and transfer between layers
 
