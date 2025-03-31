@@ -31,7 +31,6 @@ async function makeRateLimitedRequest(url: string, params: any, headers: any, ma
     throw new Error(`Failed after ${maxRetries} retries due to rate limiting`);
 }
 
-// Function to fetch token details (price, changes, volume, market cap)
 export async function getTokenDetails(req: Request, res: Response): Promise<void> {
     try {
         const tokens = ['ethereum', 'aver-ai'];
