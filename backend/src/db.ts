@@ -14,7 +14,13 @@ const lastUpdateTimes: Record<string, number> = {};
 
 export async function connectToDatabase(): Promise<void> {
     try {
-        client = new MongoClient(MONGO_URI);
+        client = new MongoClient(MONGO_URI, {
+            ssl: true,
+            tls: true,
+            tlsAllowInvalidCertificates: true,
+            serverSelectionTimeoutMS: 5000,
+        });
+
         await client.connect();
         console.log("Connected to MongoDB Atlas");
 
