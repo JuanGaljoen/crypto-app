@@ -1,3 +1,45 @@
+# name: crypto-app
+
+# services:
+#   api:
+#     build:
+#       context: ./backend
+#       dockerfile: Dockerfile
+#     restart: unless-stopped
+#     env_file: ./backend/.env
+#     ports:
+#       - 5001:5001
+#     environment:
+#       - REDIS_HOST=redis
+#       - REDIS_PORT=6379
+#     depends_on:
+#       - redis
+
+#   redis:
+#     image: redis:alpine
+#     restart: unless-stopped
+#     ports:
+#       - 6379:6379
+#     volumes:
+#       - ./backend:/app
+#       - /app/node_modules
+
+#   frontend:
+#     build:
+#       context: ./frontend
+#       dockerfile: Dockerfile
+#     restart: unless-stopped
+#     env_file: ./frontend/.env
+#     volumes:
+#       - ./frontend:/app
+#       - /app/node_modules
+#     networks:
+#       - crypto-app
+#     ports:
+#       - 5173:5173
+#     depends_on:
+#       - api
+
 name: crypto-app
 
 services:
@@ -14,6 +56,8 @@ services:
       - REDIS_PORT=6379
     depends_on:
       - redis
+    networks:
+      - crypto-network
 
   redis:
     image: redis:alpine
@@ -21,8 +65,29 @@ services:
     ports:
       - 6379:6379
     volumes:
-      - ./backend:/app
+      - redis-data:/data
+    networks:
+      - crypto-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file: ./frontend/.env
+    volumes:
+      - ./frontend:/app
       - /app/node_modules
+    ports:
+      - 3000:3000
+    depends_on:
+      - api
+    networks:
+      - crypto-network
+
+networks:
+  crypto-network:
+    driver: bridge
 
 volumes:
   redis-data:
