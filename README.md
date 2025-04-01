@@ -26,35 +26,14 @@ style Client fill:#d1e7dd,stroke:#198754,stroke-width:2px,color:black
 ```
 
 ## Prerequisites
-- Node.js 18 or higher
+- Docker and Docker Compose installed
 - MongoDB Atlas account
-- Redis (local installation required)
 - CoinGecko API key: `CG-32JARN2FnAhPKaq9X68XARkgA`
 
 ## Getting Started
 
-### 1. Redis Setup
-The application requires Redis to be running locally:
 
-```bash
-# Install Redis (Ubuntu/Debian)
-sudo apt-get install redis-server
-
-# Install Redis (macOS with Homebrew)
-brew install redis
-
-# Start Redis server
-redis-server
-
-# Start Redis server (macOS with Homebrew)
-brew services start redis
-
-# Verify Redis is running
-redis-cli ping
-# Should return "PONG"
-```
-
-### 2. Clone and Install
+### 1. Clone and Install
 
 ```bash
 # Clone the repository
@@ -65,7 +44,7 @@ cd crypto-app
 npm install
 ```
 
-### 3. Environment Setup
+### 2. Environment Setup
 Create a `.env` file in the root directory:
 
 ```
@@ -82,14 +61,23 @@ REDIS_URL=redis://localhost:6379
 PORT=5001
 ```
 
-### 4. Running the Application
-
 ```bash
-# Start the backend server
-npm run dev
+### 3. Running the Application with Docker
 
-# In a separate terminal, start the frontend
-npm run dev
+# Build and start the containers in detached mode
+docker-compose up --build -d
+
+# View running containers
+docker ps
+
+# Check logs (optional)
+docker-compose logs
+
+# Stop the containers
+docker-compose down
+
+# Stop and remove volumes (if needed)
+docker-compose down -v
 ```
 
 The application will be available at `http://localhost:3000`
@@ -113,14 +101,13 @@ Returns OHLC (Open, High, Low, Close) data for the specified token for the last 
 
 ```bash
 # Run all tests
-npm test
+docker-compose exec api npm test
 
 # Run specific test categories
-npm run test:api
-npm run test:db
-npm run test:cache
-npm run test:security
-```
+docker-compose exec api npm run test:api
+docker-compose exec api npm run test:db
+docker-compose exec api npm run test:cache
+docker-compose exec api npm run test:security
 
 ## Performance Considerations
 - The free CoinGecko API has a rate limit, so it might timeout for 60 seconds if limit is reached.
