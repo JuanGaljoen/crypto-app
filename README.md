@@ -11,6 +11,20 @@ The application follows a layered architecture:
 - Database: MongoDB Atlas (1-minute persistence)
 - External API: CoinGecko
 
+```mermaid
+flowchart LR
+    Client[Frontend Next.js + TailwindCSS] --> API[Backend API TypeScript]
+    API --> Cache[Redis Cache 30s refresh]
+    API --> DB[MongoDB Atlas 1m persistence]
+    API --> External[CoinGecko API]
+
+style Client fill:#d1e7dd,stroke:#198754,stroke-width:2px,color:black
+    style API fill:#cfe2ff,stroke:#0d6efd,stroke-width:2px,color:black
+    style Cache fill:#fff3cd,stroke:#ffc107,stroke-width:2px,color:black
+    style DB fill:#f8d7da,stroke:#dc3545,stroke-width:2px,color:black
+    style External fill:#e2e3e5,stroke:#6c757d,stroke-width:2px,color:black
+```
+
 ## Prerequisites
 - Node.js 18 or higher
 - MongoDB Atlas account
