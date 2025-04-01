@@ -61,9 +61,9 @@ REDIS_URL=redis://localhost:6379
 PORT=5001
 ```
 
-```bash
 ### 3. Running the Application with Docker
 
+```bash
 # Build and start the containers in detached mode
 docker-compose up --build -d
 
