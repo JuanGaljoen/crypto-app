@@ -69,7 +69,7 @@ export default function Home() {
       )}
 
       <div className="mb-8">
-        <h2 className="text-xl font-semibold mb-4">My Portfolio</h2>
+        <h2 className="text-xl font-semibold mb-4">Cryptocurrency Data</h2>
         <TokenTable
           tokens={tokensData}
           onSelectToken={handleTokenSelect}
